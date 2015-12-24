@@ -5,31 +5,41 @@ title: Getting started with Yeoman
 sidebar: sidebars/learning.md
 ---
 
-The Yeoman workflow is comprised of three core tools for improving your productivity and satisfaction when building a web app. These tools are:
+Yeoman is a generic scaffolding system allowing you to create any kind of app. It'll allow you to rapidly get started on new projects and streamline the maintenance of existing projects.
 
-* [yo](https://github.com/yeoman/yo) - the scaffolding tool from Yeoman
-* A package manager, such as [bower](http://bower.io/) or [npm](https://www.npmjs.com/).
-* A build tool, such as [Grunt](http://gruntjs.com/) or [Gulp](http://gulpjs.com/).
+Yeoman is language agnostic. It can generates projects in any languages (Web, Java, Python, C#, etc.)
 
-Each of these projects are independently maintained by their respective communities, but work well together as a part of a prescriptive workflow for keeping you effective. Let’s walk through what these binaries can do.
+Yeoman by itself doesn't make any decision. Yeoman runs _generators_ who're making every decision. A generator is basically a plugin in the Yeoman environment. There's more than [1500 publicly available generators](/generators) and you can [create your own](/authoring) if public ones are not matching your team workflow; Yeoman is always the right choice for your scaffolding needs.
 
-<p class="toolset">
-  <img class="full" src="/assets/img/workflow.jpg">
-</p>
+Here's a couple common use cases:
 
-## yo
+- Creating new projects rapidly
+- Creating section of your project (how about creating a new controller with unit tests?)
+- Creating packages
+- Bootstrapping new services
+- Enforcing standards and latest best practices in any new app components.
+- Promote your project by allowing users to bootstrap new plugins
+- Etc, etc
 
-Yo is maintained by the Yeoman project and offers web application scaffolding, utilizing scaffolding templates we refer to as generators. You typically install yo and any generators you think you might use via npm.
+## Getting started
+
+Yo is the Yeoman command line utility allowing you to create projects utilizing scaffolding templates we refer to as generators. You typically install yo and any generators you think you might use via npm.
 
 ### Installing yo and some generators
 
-First, you'll need to install `yo` and other required tools:
+First, using `npm` you'll need to install `yo`:
 
 ```sh
-npm install -g yo bower grunt-cli gulp
+npm install -g yo
 ```
 
-*see the sections about __Bower__, __Gulp__ and __Grunt__ below for more information*
+Then you'll need to install a generator. Generators are npm packages named `generator-N`, you can search them on [our website](/generators) or by selecting "install a generator" menu option while running `yo`. To install the `webapp` generator, you'd use:
+
+```
+npm install -g generator-webapp
+```
+
+*TODO: Add note about troubleshooting installation errors*
 
 *npm is the package manager for [Node.js](https://nodejs.org/) and comes bundled with it.*
 
@@ -38,171 +48,55 @@ npm install -g yo bower grunt-cli gulp
 
 ### Basic scaffolding
 
-To scaffold a web application, you'll need to install the `generator-webapp` generator:
+We'll use `generator-webapp` in our examples below. Replace `webapp` with the name of your generator for the same result.
 
-```sh
-npm install -g generator-webapp
-```
-
-This is the default web application generator that will scaffold out a project containing [HTML5 Boilerplate](https://html5boilerplate.com/), [jQuery](http://jquery.com), [Modernizr](http://modernizr.com), and [Bootstrap](http://twbs.github.io/bootstrap/). You'll have a choice during the interactive prompts to not include many of these. This generator will use __Grunt__, while others may use __Gulp__ or other alternative set of build tools.
-
-Now that the generator is installed, create a directory for your new project
-
-```sh
-mkdir my-yo-project
-$ cd my-yo-project
-```
-
-and then run:
+To scaffold a new project, you'll run:
 
 ```sh
 yo webapp
 ```
 
-Each project created with yo will also pull in relevant Grunt tasks which the community feels is needed or useful for your workflow.
-
-The webapp generator is considered the simplest possible start for a web app. We also provide some framework generators which can be used to scaffold out a project and later views, models, controllers and so on.
-
-
-#### Example: Scaffolding an AngularJS app
-
-As always, before using a new generator, you must install it from npm first:
+At this point, most generators will ask you a series of questions to customize your new project. They might also provide options to customize your project further or to allow automation of the scaffolding, to see which options are available you'll run:
 
 ```sh
-npm install -g generator-angular
+yo webapp --help
 ```
 
-After that, create a new directory for your application, then run:
+You'll realize a lot of generators rely on build systems (like Grunt or Gulp), and package manager (like npm and Bower). Make sure to visit your generator site to learn how to run and maintains your new app. You can easily access a generator home page by running:
 
 ```sh
-yo angular
+npm home generator-webapp
 ```
 
-Many generators allow you to customize your application by using flags from the initial command. As an example, with `generator-angular`, you can enter:
+Generators scaffolding complex frameworks are likely to provide generators to scaffold smaller part of a project. These generators are usually referred to as _sub-generator_, are are accessed as `generator:sub-generator`. Taking `generator-angular` as example, once you've generated you full angular app, you might wish to add a new controller. You'd do so by running:
 
 ```sh
-yo angular --coffee
+yo angular:controller MyNewController
 ```
 
-Here, we are first generating the file structure for a basic web application and then writing a number of boilerplate files for a new AngularJS application on top of it. This includes boilerplate directives and controllers as well as scaffolded Karma unit tests.
+
+### Other yo commands
+
+Other than the basics covered in the previous section, `yo` is also a fully interactive tools. Simply typing `yo` in your terminal will allow you to select from a list of options to manage everything related to your generators: run, update, install, help and other utilities.
+
+Yo also provide the following commands.
+
+- `yo --help` Access the full help screen
+- `yo --generators` List every installed generators
+- `yo --version` Get the version
 
 
-##### Scaffolding out your Angular app’s pieces
+### Troubleshooting
 
-Some generators can also be used to scaffold further pieces of your application - we call these sub-generators.
-
-In the AngularJS framework, for example, your application is made up of a number of pieces including controllers, directives and filters. You can actually scaffold out any of these pieces (and more) during your development workflow as shown below:
+If you run into any issues, start by running
 
 ```sh
- yo angular:controller myController
-$ yo angular:directive myDirective
-$ yo angular:filter myFilter
-$ yo angular:service myService
+yo doctor
 ```
 
-Each framework generator has further documentation available noting what sub-generators it supports.
+The `doctor` command will diagnose your system and provide steps to resolve the most common issues.
+
 
 ### Creating your own generators
 
 See [Authoring](/authoring).
-
-
-## Bower
-
-Bower is a package manager for the web which allows you to easily manage dependencies for your projects. This includes assets such as JavaScript, images and CSS. It is maintained by Twitter and the open-source community.
-
-Managing packages using Bower can be done using the following commands:
-
-```sh
-# Search for a dependency in the Bower registry.
-$ bower search <dep>
-
-# Install one or more dependencies.
-$ bower install <dep>..<depN>
-
-# List out the dependencies you have installed for a project.
-$ bower list
-
-# Update a dependency to the latest version available.
-$ bower update <dep>
-```
-
-### Using Bower with a project scaffolded using yo
-
-To create a basic web app with a dependency on a jQuery plug-in:
-
-```sh
-# Scaffold a new application.
-$ yo webapp
-
-# Search Bower's registry for the plug-in we want.
-$ bower search jquery-pjax
-
-# Install it and save it to bower.json
-$ bower install jquery-pjax --save
-
-# If you're using RequireJS...
-# (be aware that currently the webapp generator does not include RequireJS and the following command only applies to generators that do)
-$ grunt bower
-# Injects your Bower dependencies into your RequireJS configuration.
-
-# If you're not using RequireJS...
-$ grunt wiredep
-# Injects your dependencies into your index.html file.
-```
-
-It’s as simple as that.
-
-*Your chosen generator may not include the grunt tasks "bower" and "wiredep". You can read more about how to install and use these at [grunt-bower-requirejs](https://github.com/yeoman/grunt-bower-requirejs) and [grunt-wiredep](https://github.com/stephenplusplus/grunt-wiredep).*
-
-## Gulp
-
-Gulp is a task-based command-line tool for JavaScript projects. It can be used to build projects, but also exposes several commands which you will want to use in your workflow. Many of these commands utilize Grunt tasks under the hood which are maintained by the Yeoman team.
-
-### Gulp commands
-
-```sh
-# Preview an app you have generated (with Livereload).
-$ gulp serve
-
-# Run the unit tests for an app.
-$ gulp test
-
-# Build an optimized, production-ready version of your app.
-$ gulp
-```
-
-These commands can be used together with the yo CLI for a seamless development workflow:
-
-```sh
-yo webapp
-$ gulp serve
-$ gulp test
-$ gulp
-```
-
-## Grunt
-
-Grunt is a task-based command-line tool for JavaScript projects. It can be used to build projects, but also exposes several commands which you will want to use in your workflow.
-
-### Grunt commands
-
-```sh
-# Preview an app you have generated (with Livereload).
-$ grunt serve
-
-# Run the unit tests for an app.
-$ grunt test
-
-# Build an optimized, production-ready version of your app.
-$ grunt
-```
-
-These commands can be used together with the yo CLI for a seamless development workflow:
-
-```sh
-yo webapp
-$ grunt serve
-$ grunt test
-$ grunt
-```
